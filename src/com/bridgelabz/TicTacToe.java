@@ -1,25 +1,23 @@
 package com.bridgelabz;
 
+import java.util.Locale;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
     static char[] board = new char[10];
     static char player;
     static char computerPlayer;
+    static boolean won = false;
 
     public static void main(String[] args) {
-
         System.out.println("Welcome to TicTacToe Game");
         createBoard();
+        showBoard();
         playerChoice();
         showBoard();
 
-        if (player == 'X') {
-            computerPlayer = 'O';
-        } else {
-            computerPlayer = 'X';
-        }
-        while (true) {
+        while (!won) {
             makeMove();
             showBoard();
         }
@@ -32,9 +30,28 @@ public class TicTacToe {
     }
 
     public static void playerChoice() {
+
+        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose X or O : ");
+        player = ((scanner.next().toUpperCase(Locale.ROOT)).charAt(0));
+
+        if (player == 'X') {
+            computerPlayer = 'O';
+        } else if (player == 'O') {
+            computerPlayer = 'X';
+        }
+        int rand = random.nextInt(2);
+        System.out.println(rand);
+        if (rand == 0) {
+            System.out.println("Its Heads so Computer plays first.");
+            board[random.nextInt(9) + 1] = computerPlayer;
+        } else {
+            System.out.println("Its tails so You start 1st ");
+            makeMove();
+        }
         player = ((scanner.next().toUpperCase().charAt(0)));
+
     }
 
     public static void showBoard() {
@@ -46,13 +63,13 @@ public class TicTacToe {
     }
 
     public static void makeMove() {
-        System.out.println("Choose an index from 1 to 9 to write 'X': ");
+        System.out.println("Choose an index from 1 to 9 to write: " + player);
         Scanner scanner = new Scanner(System.in);
         int index = scanner.nextInt();
         if (board[index] == ' ') {
             board[index] = player;
         } else {
-            System.out.println("   Choose an empty place!   ");
+            System.out.println("Choose an empty place!");
             System.out.println();
             makeMove();
         }
